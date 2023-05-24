@@ -55,56 +55,57 @@ public class p2 {
                 pre = cur;
                 if (data < cur.data){
                     cur = cur.left;
-                    if (data == 1){
-                        System.out.println("L");
-//                        System.out.println(data + " " + pre.data + " " + cur.data);
-                    }
                     continue;
                 }
                 cur = cur.right;
-                if (data == 1){
-                    System.out.println("R");
-//                    System.out.println(data + " " + pre.data + " " + cur.data);
+            }
+            if (pre != null) {
+                if (data < pre.data) {
+                    pre.left = new BSTNode(data);
+                }
+                else {
+                    pre.right = new BSTNode(data);
                 }
             }
-            if (pre.left == cur) {
-                pre.left = new BSTNode(data);
-            }
-            else {
-                pre.right = new BSTNode(data);
-            }
         }
 
-        int iterateOverBST(BSTNode root, int preData, int level){
-            if (root == null){
-                return 0;
+        void iterateOverBST(BSTNode cur){
+            if (cur == null){
+                return;
             }
-            System.out.println(preData + " " + root.data);
-            return Math.max(Math.max(iterateOverBST(root.left, root.data, level + 1), iterateOverBST(root.right, root.data, level + 1)), level);
+            int left = (cur.left == null ? -1 : cur.left.data);
+            int right = (cur.right == null ? -1 : cur.right.data);
+            System.out.println(cur.data + "; L: " + left + "; R:" + right);
+            iterateOverBST(cur.left);
+            iterateOverBST(cur.right);
         }
 
-        void printBST(){
-            int maxLevel = iterateOverBST(this, 0,0);
-            for (int i = 0; i < maxLevel; i++) {
-                for (int arr : tree[i]) {
-                    System.out.print(arr + " ");
-                }
-                System.out.println();
-            }
-        }
-
-        BSTNode insertArrIntoBST(int[] arr) {
-            BSTNode root = new BSTNode(arr[0]);
+        void insertArrIntoBST(int[] arr) {
             for (int i = 1; i < arr.length; i++) {
                 insert(this, arr[i]);
             }
-            return root;
+        }
+
+        void search(int data){
+            BSTNode cur = this;
+            int cmpcnt = 0;
+            while (cur.data != data){
+                cmpcnt++;
+                if (data < cur.data){
+                    cur = cur.left;
+                    continue;
+                }
+                cur = cur.right;
+            }
+            System.out.println(cmpcnt);
         }
     }
     public static void main(String[] args) {
         int[] arr = {4, 2, 8, 3, 1, 7, 9, 6, 5};
         BSTNode root = new BSTNode(4);
         root.insertArrIntoBST(arr);
-        root.iterateOverBST(root, 0, 0);
+        root.iterateOverBST(root);
+        root.search(5);
+        root.search(9);
     }
 }
